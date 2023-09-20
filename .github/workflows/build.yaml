@@ -1,0 +1,21 @@
+name: Full Build
+
+on:
+  push:
+    branches:
+      - test-build
+
+jobs:
+  test-ubuntu-x86_64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove Gunk
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install deps
+        run: |
+          sudo apt install build-essential kmod linux-headers-`uname -r`
