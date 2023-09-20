@@ -23,3 +23,9 @@ jobs:
         run: |
           cd src/kmod
           make
+      - name: Install mod
+        run: |
+          sudo insmod kmodme.ko
+      - name: lsmod
+        run: |
+          sudo lsmod | grep kmodme
