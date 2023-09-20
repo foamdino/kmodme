@@ -19,3 +19,6 @@ jobs:
       - name: Install deps
         run: |
           sudo apt install build-essential kmod linux-headers-`uname -r`
+      - name: Make
+        run: |
+          make
