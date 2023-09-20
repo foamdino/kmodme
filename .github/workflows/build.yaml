@@ -21,4 +21,5 @@ jobs:
           sudo apt install build-essential kmod linux-headers-`uname -r`
       - name: Make
         run: |
+          cd src/kmod
           make
