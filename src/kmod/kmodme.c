@@ -12,18 +12,19 @@
 #include <linux/proc_fs.h>
 #include <linux/netdevice.h>
 #include <linux/net_namespace.h>
+#include <linux/interrupt.h>
+#include <linux/of_irq.h>
  
 static int __init in(void) 
 { 
-    unsigned int irq;
     struct net *net;
     unsigned int ifindex;
 
     pr_info("Hello world 1.\n"); 
-    irq = 8;
+    // irq = 8;
 
-    struct irq_data *d = irq_get_irq_data(irq);
-    pr_info("irq: %du, hwirq: %lu\n", d->irq, d->hwirq);
+    // struct irq_data *d = irq_get_irq_data(irq);
+    // pr_info("irq: %du, hwirq: %lu\n", d->irq, d->hwirq);
 
     /* From net/ethtool/netlink.c
     		dev = netdev_get_by_index(net, ifindex, &req_info->dev_tracker,
@@ -36,8 +37,10 @@ static int __init in(void)
 
     struct net_device *dev = dev_get_by_index(net, ifindex);
 
+    int irq = irq_of_parse_and_map(of_node_get(dev->dev.parent->of_node), 0);
+
     if (dev) {
-        pr_info("Found network device: %s with irq: %d\n", dev->name, dev->irq);
+        pr_info("Found network device: %s with irq: %d, parsed irq: %d\n", dev->name, dev->irq, irq);
     } else {
         pr_info("Network device with index %d not found\n", ifindex);
     }
